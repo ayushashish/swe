@@ -37,11 +37,17 @@ exports.getAllSchools = asyncHandler(async (req, res, next) => {
 // @route   GET /school/students
 // @access  Private
 exports.getStudents = asyncHandler(async (req, res, next) => {
-  const schools = await School.find();
-  let query;
-  query = Student.find().populate({
-    path: "school",
-    select: "name description",
-  });
-  res.status(201).json({ success: true, content: { data: schools } });
+  console.log("in students school");
+  const trial = School.aggregate([
+    {
+      $lookup: {
+        from: "Student",
+        localField: "_id",
+        foreignField: "schoolId",
+        as: "students",
+      },
+    },
+  ]);
+  const datas = await trial;
+  res.status(201).json({ success: true, content: { data: datas } });
 });
