@@ -93,13 +93,10 @@ exports.getAllUsers = asyncHandler(async (req, res, next) => {
 // @access  Private
 exports.getSingleUser = asyncHandler(async (req, res, next) => {
   try {
-    console.log("in");
     const singleUser = await User.findById(req.params.id);
-    console.log("searched");
     res.status(200).json({ status: true, content: singleUser });
   } catch (err) {
     if (err.name === "CastError") {
-      console.log("err");
       res.status(200).json({ status: true, content: { data: null } });
     }
     console.log(err.name);

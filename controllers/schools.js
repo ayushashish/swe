@@ -1,6 +1,5 @@
 const School = require("../models/School.js");
 const asyncHandler = require("../middleware/async");
-const Student = require("../models/Student.js");
 
 // @desc    Create new role
 // @route   POST /school
@@ -37,11 +36,10 @@ exports.getAllSchools = asyncHandler(async (req, res, next) => {
 // @route   GET /school/students
 // @access  Private
 exports.getStudents = asyncHandler(async (req, res, next) => {
-  console.log("in students school");
   const trial = School.aggregate([
     {
       $lookup: {
-        from: "Student",
+        from: "students",
         localField: "_id",
         foreignField: "schoolId",
         as: "students",
